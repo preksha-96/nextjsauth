@@ -2,6 +2,8 @@
 
 import { getSession } from "next-auth/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 import { auth } from "@/app/firebase/config";
 
 export default async function handler(
@@ -25,11 +27,16 @@ export default async function handler(
     return;
   }
 
-  const { email, password } = req.body;
+  const { email, password,firstname,lastname,phone } = req.body;
 
   try {
     // Create user account using Firebase Authentication
-    await createUserWithEmailAndPassword(auth, email, password);
+   const {user}= await createUserWithEmailAndPassword(auth, email, password);
+   const db = getFirestore();
+    const userRef = collection(db, "users");
+    await addDoc(userRef, { uid: user.uid, email, firstname,lastname,phone });
+
+    res.status(200).json({ success: true });
     res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error signing up:', error.message);

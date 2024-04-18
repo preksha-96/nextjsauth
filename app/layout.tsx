@@ -3,7 +3,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Session } from "next-auth";
-import { SessionProvider as Provider } from "next-auth/react";
+
+import { SessionProvider as Provider  } from "next-auth/react";
 
 type Props = {
   children: React.ReactNode;
@@ -11,7 +12,6 @@ type Props = {
 };
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 export default function RootLayout({
   children,

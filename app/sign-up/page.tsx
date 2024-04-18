@@ -10,17 +10,21 @@ import { useSession } from "next-auth/react";
 const Signup = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
   const { data: session } = useSession(); // Get session data from NextAuth.js
   const [emailErr, setEmailErr] = useState(false);
   const [emailErrmsg, setEmailErrmsg] = useState("");
 
-  const [password, setPassword] = useState("");
   const [createUserWithEmailpwd] = useCreateUserWithEmailAndPassword(auth);
   const handleSignup = async (email: string, password: string) => {
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, firstname, lastname, phone }),
     });
     if (response.ok) {
       router.push("/dashboard"); // Redirect to dashboard on successful signup
@@ -38,9 +42,36 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center bg-gray-900 ">
       <form className="bg-gradient-to-r to-purple-500 from-pink-500 p-10 rounded-lg shadow-xl w-96">
-        <div className="mb-4">
+        <div className="mb-2">
           <h2 className="text-2xl text-white font-semibold mb-4">Sign Up</h2>
-
+          <label htmlFor="email" className="block text-white">
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstname"
+            className=" leading-9 
+            mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="lastname" className="block text-white">
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastname"
+            className=" leading-9 
+            mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-2">
           <label htmlFor="email" className="block text-white">
             Email
           </label>
@@ -54,7 +85,7 @@ const Signup = () => {
             required
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           <label htmlFor="password" className="block text-white">
             Password
           </label>
@@ -67,24 +98,36 @@ const Signup = () => {
             required
           />
         </div>
+        <div>
+          <label htmlFor="phone" className="block text-white">
+            Phone
+          </label>
+          <input
+            type="phone"
+            id="phone"
+            className=" leading-9 
+            mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </div>
         <button
           type="button"
           onClick={() => {
             handleSignup(email, password);
           }}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+          className=" mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
         >
           Sign Up
         </button>
-        {emailErrmsg ?? (
-          <div
-            role="alert"
-            className="alert alert-error mt-2 text-white
+        <div
+          role="alert"
+          className="alert alert-error mt-2 text-white
 "
-          >
-            {emailErrmsg}
-          </div>
-        )}
+        >
+          {emailErrmsg}
+        </div>
       </form>
     </div>
   );
