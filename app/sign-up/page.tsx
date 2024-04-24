@@ -34,11 +34,26 @@ const Signup = () => {
       setEmailErrmsg(data.error); // Set error message received from API response
     }
   };
+  const handleKiboCall = async () => {
+    const response = await fetch("/api/auth/customerAccount", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    if (response.ok) {
+      console.log(response);
+    } else {
+      const data = await response.json();
+      console.log(data);
+      setEmailErrmsg(data.error); // Set error message received from API response
+    }
+  };
 
   if (session) {
     router.push("/");
     return null;
   }
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center bg-gray-900 ">
       <form className="bg-gradient-to-r to-purple-500 from-pink-500 p-10 rounded-lg shadow-xl w-96">
@@ -120,6 +135,15 @@ const Signup = () => {
           className=" mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
         >
           Sign Up
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            handleKiboCall();
+          }}
+          className=" mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        >
+          Kibo
         </button>
         <div
           role="alert"
