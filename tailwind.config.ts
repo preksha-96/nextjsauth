@@ -8,7 +8,14 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   daisyui: {
-    themes: ["cupcake", "dark", "cmyk"],
+    themes:[],
+    darkTheme: "dark",
+    base: true, 
+    styled: true, 
+    utils: true, 
+    prefix: "", 
+    logs: true,
+    themeRoot: ":root", //
   },
   theme: {
     extend: {
@@ -22,6 +29,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [require("daisyui")],
 };
 export default config;
